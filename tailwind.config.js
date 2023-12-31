@@ -9,6 +9,9 @@ export default {
         secondary: '#9BBEC8', // Replace with your secondary color
         light: '#DDF2FD', // Replace with your accent color
       },
+      screens: {
+        xxs: { raw: '(min-width: 400px)' },
+      },
     },
   },
 

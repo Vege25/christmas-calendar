@@ -4,6 +4,7 @@ import ProfileComponent from '../profileComponent';
 interface Message {
   // Add your component props here
   message: Values;
+  firebase: any;
 }
 interface Values {
   photoURL: string;
@@ -13,14 +14,14 @@ interface Values {
   imageUrl: any;
 }
 
-const TweetDefault: React.FC<Message> = ({ message }) => {
+const TweetDefault: React.FC<Message> = ({ message, firebase }) => {
   // Add your component logic here
   const { text } = message;
 
   return (
     // Add your JSX code here
     <div className='w-full bg-white'>
-      <ProfileComponent props={message} />
+      <ProfileComponent props={message} firebase={firebase} />
       <div className='flex flex-col w-full'>
         <div className='w-full m-2'>
           <p className='text-md '>{text}</p>

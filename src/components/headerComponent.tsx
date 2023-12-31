@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { User } from '../interfaces/firebase';
 
-const Header: React.FC<User> = ({ user }) => {
+const Header: React.FC<User> = ({ user, isGiftDisabled }) => {
   const { photoURL, displayName } = user;
   const [isSticky, setSticky] = useState(false);
 
@@ -39,9 +39,9 @@ const Header: React.FC<User> = ({ user }) => {
     <header
       className={`flex flex-row justify-between w-full items-center h-16 bg-light max-w-xl ${
         isSticky ? 'fixed top-0 transform translate-y-0' : ''
-      }`}
+      }${isGiftDisabled ? 'fixed top-0' : ''}`}
     >
-      <div className='flex flex-row items-center justify-between w-full p-2 px-4 profileContainer'>
+      <div className='flex flex-row items-center justify-between w-full h-full p-2 px-4 profileContainer'>
         <div className='flex items-center gap-2'>
           <img
             className='border-2 border-solid rounded-full h-14 dark-border'
@@ -49,11 +49,16 @@ const Header: React.FC<User> = ({ user }) => {
             alt='Home image'
           />
           {displayName}
-        </div>
-        <div className='flex gap-10 text-lg'>
-          <div className=''>
+          <div className='ml-2'>
             <a href='/logout'>
               <i className='fa-solid fa-right-from-bracket'></i>
+            </a>
+          </div>
+        </div>
+        <div className='flex items-center h-full gap-10 text-lg'>
+          <div className=''>
+            <a href='/bucket'>
+              <i className='fa-regular fa-calendar'></i>
             </a>
           </div>
           <div className=''>

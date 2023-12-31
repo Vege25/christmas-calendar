@@ -35,7 +35,7 @@ const Tweets: React.FC<LoginProps> = ({ firebase }) => {
         const q = query(
           messagesCollection,
           orderBy('createdAt', 'desc'),
-          limit(25)
+          limit(100)
         );
         const querySnapshot = await getDocs(q);
 
@@ -67,7 +67,7 @@ const Tweets: React.FC<LoginProps> = ({ firebase }) => {
     return (
       <div>
         {messages.map((msg) => (
-          <Tweet key={msg.id} message={msg} />
+          <Tweet key={msg.id} message={msg} firebase={firebase} />
         ))}
       </div>
     );

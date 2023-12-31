@@ -7,6 +7,7 @@ import Home from './pages/homePage';
 import LogOut from './pages/logOutPage';
 import { initializeApp } from 'firebase/app'; // Add this import
 import './index.css'; // Import your styles
+import BucketList from './pages/bucketListPage';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBGgvgbuF0CZMtf4hZFkd2h4eXJODAYAfM',
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path='/compose' element={<Compose firebase={firebaseApp} />} />
         <Route path='/login' element={<Login firebase={firebaseApp} />} />
+        <Route path='/bucket' element={<BucketList firebase={firebaseApp} />} />
         <Route path='/logout' element={<LogOut firebase={firebaseApp} />} />
         <Route index path='/' element={<Home firebase={firebaseApp} />} />
       </Routes>

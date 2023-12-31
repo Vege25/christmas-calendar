@@ -23,6 +23,8 @@ const ParallaxComponent: React.FC = () => {
     useRef<HTMLImageElement>(null);
   const block: LegacyRef<HTMLDivElement> | undefined =
     useRef<HTMLDivElement>(null);
+  const info: LegacyRef<HTMLDivElement> | undefined =
+    useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let ctx = gsap.context(() => {
@@ -96,6 +98,14 @@ const ParallaxComponent: React.FC = () => {
         0
       );
       tl.to(
+        info.current,
+        {
+          y: '+=300',
+          opacity: 0,
+        },
+        0
+      );
+      tl.to(
         btn.current,
         {
           opacity: 1,
@@ -113,43 +123,50 @@ const ParallaxComponent: React.FC = () => {
         <img
           ref={mountain1}
           className='mountain mtn1'
-          src='/images/ilu_01.png'
+          src='/images/ilu_01.webp'
           alt='Mountain image'
         />
         <img
           ref={mountain2}
           className='mountain mtn2'
-          src='/images/ilu_02.png'
+          src='/images/ilu_02.webp'
           alt='Mountain image'
         />
         <img
           ref={mountain3}
           className='mountain mtn3'
-          src='/images/ilu_03.png'
+          src='/images/ilu_03.webp'
           alt='Mountain image'
         />
         <img
           ref={portrait}
           className='portrait'
-          src='/images/ilu_04.png'
+          src='/images/ilu_04.webp'
           alt='Mountain image'
         />
         <img
           ref={mountain5}
           className='mountain mtn5'
-          src='/images/ilu_05.png'
+          src='/images/ilu_05.webp'
           alt='Mountain image'
         />
         <img
           ref={mountain6}
           className='mountain mtn6'
-          src='/images/ilu_06.png'
+          src='/images/ilu_06.webp'
           alt='Mountain image'
         />
         <div ref={block} className='block-element'></div>
         <div className='copy' ref={copy}>
           <h1>Rakkaalleni</h1>
           <span ref={btn}>Metelle</span>
+        </div>
+        <div
+          className='flex flex-col items-center justify-center info'
+          ref={info}
+        >
+          <p>Selaa alaspäin</p>
+          <i className='text-3xl text-primary fa-solid fa-caret-down'></i>
         </div>
       </div>
     </div>

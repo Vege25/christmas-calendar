@@ -3,6 +3,7 @@ interface LoginProps {
 }
 interface User {
   user: any;
+  isGiftDisabled: any;
 }
 interface Message {
   message: Message;
@@ -19,5 +20,6 @@ interface Message {
 }
 interface MessageObj {
   message: any;
+  firebase: any;
 }
 export type { LoginProps, User, Message, MessageObj };

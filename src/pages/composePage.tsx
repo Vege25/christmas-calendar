@@ -12,6 +12,7 @@ import {
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import Login from './loginPage';
 import Header from '../components/headerComponent';
+import SettingsComponent from '../components/settingsComponent';
 
 const Compose: React.FC<LoginProps> = ({ firebase }) => {
   interface MessageData {
@@ -50,16 +51,49 @@ const Compose: React.FC<LoginProps> = ({ firebase }) => {
     }
   }
 
-  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setImage(file);
-
       // Display image preview
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
+      reader.onloadend = async () => {
+        const img = new Image();
+        img.src = reader.result as string;
+
+        img.onload = async () => {
+          // Create a canvas element to resize the image
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d')!;
+
+          // Set the canvas dimensions to the desired display size
+          const targetWidth = 600; // Set the desired width
+          const scaleFactor = targetWidth / img.width;
+          canvas.width = targetWidth;
+          canvas.height = img.height * scaleFactor;
+
+          // Draw the image onto the canvas with the resized dimensions
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          // Convert the canvas content to a Base64-encoded string with reduced quality
+          const resizedImageData = canvas.toDataURL('image/jpeg', 0.7); // Adjust quality as needed
+
+          // Set the resized image preview
+          setImagePreview(resizedImageData);
+
+          // Create a custom File object with additional properties
+          const resizedImageFile = new File(
+            [await fetch(resizedImageData).then((res) => res.blob())],
+            file.name,
+            {
+              lastModified: file.lastModified,
+            }
+          );
+
+          // Set the resized image file to be uploaded
+          setImage(resizedImageFile);
+        };
       };
+
       reader.readAsDataURL(file);
     }
   };
@@ -102,7 +136,7 @@ const Compose: React.FC<LoginProps> = ({ firebase }) => {
 
   return (
     <div className='max-w-xl mx-auto compose'>
-      <Header user={user} />
+      <Header user={user} isGiftDisabled={false} />
       <form onSubmit={handleSubmit} className='pt-16 mx-4'>
         <div className='flex items-center justify-between pb-4 border-b border-gray-200 compose-header'>
           <div className='compose-back'>
@@ -156,9 +190,10 @@ const Compose: React.FC<LoginProps> = ({ firebase }) => {
           type='submit'
           className='px-4 py-2 mt-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-600'
         >
-          Submit
+          Luo muisto
         </button>
       </form>
+      <SettingsComponent />
     </div>
   );
 };
