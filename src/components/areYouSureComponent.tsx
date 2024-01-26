@@ -10,7 +10,7 @@ const AreYouSureComponent: React.FC<AreYouSureComponentProps> = ({
   onCancel,
 }) => {
   const [isDeleteClicked, setIsDeleteClicked] = useState(false);
-
+  console.log(isDeleteClicked);
   const handleDeleteClick = () => {
     setIsDeleteClicked(true);
     onConfirm(); // Call the onConfirm callback when "Delete" is clicked

@@ -16,7 +16,9 @@ body {
   --primary: colors.dark;
   --secondary: colors.light;
 }
-
+.wrapped-obj {
+  font-family: 'Kalnia', serif;
+}
 /* Your custom styles go here */
 .dark-bg {
   background-color: theme('colors.dark');

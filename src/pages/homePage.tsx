@@ -8,6 +8,7 @@ import { LoginProps } from '../interfaces/firebase';
 import Header from '../components/headerComponent';
 import Tweets from '../components/tweetsComponent';
 import ParallaxComponent from '../components/parallaxComponent';
+import YearWrapped from '../components/yearWrapped';
 
 const Home: React.FC<LoginProps> = ({ firebase }) => {
   if (!firebase) {
@@ -77,8 +78,11 @@ const Home: React.FC<LoginProps> = ({ firebase }) => {
         )}
         <Header user={user} isGiftDisabled={isGiftDisabled} />
         <div
-          className={`col-12 tweets-container ${isGiftDisabled ? 'mt-16' : ''}`}
+          className={`col-12 tweets-container flex flex-col gap-4 ${
+            isGiftDisabled ? 'mt-16' : ''
+          }`}
         >
+          <YearWrapped />
           <Tweets firebase={firebase} />
         </div>
         <div className='col-12'>

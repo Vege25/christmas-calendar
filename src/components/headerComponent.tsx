@@ -37,18 +37,20 @@ const Header: React.FC<User> = ({ user, isGiftDisabled }) => {
 
   return (
     <header
-      className={`flex flex-row justify-between w-full items-center h-16 bg-light max-w-xl ${
+      className={`flex z-50 flex-row justify-between w-full items-center h-16 bg-light max-w-xl ${
         isSticky ? 'fixed top-0 transform translate-y-0' : ''
       }${isGiftDisabled ? 'fixed top-0' : ''}`}
     >
       <div className='flex flex-row items-center justify-between w-full h-full p-2 px-4 profileContainer'>
-        <div className='flex items-center gap-2'>
-          <img
-            className='border-2 border-solid rounded-full h-14 dark-border'
-            src={photoURL}
-            alt='Home image'
-          />
-          {displayName}
+        <div className='flex items-center gap-2 cursor-pointer'>
+          <a className='flex items-center gap-2' href='/'>
+            <img
+              className='border-2 border-solid rounded-full h-14 dark-border'
+              src={photoURL}
+              alt='Home image'
+            />
+            {displayName}
+          </a>
           <div className='ml-2'>
             <a href='/logout'>
               <i className='fa-solid fa-right-from-bracket'></i>

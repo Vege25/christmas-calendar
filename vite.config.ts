@@ -21,7 +21,7 @@ export default defineConfig({
         background_color: '#f69435',
         display: 'standalone',
         scope: './',
-        start_url: './index.html',
+        start_url: './',
         name: 'M&V Muistoja',
         short_name: 'M&V Muistoja',
         icons: [

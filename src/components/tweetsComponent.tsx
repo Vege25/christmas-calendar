@@ -8,6 +8,7 @@ import {
   query,
   orderBy,
   limit,
+  startAfter,
   getDocs,
   DocumentData,
   QueryDocumentSnapshot,
@@ -26,6 +27,9 @@ interface Message {
 const Tweets: React.FC<LoginProps> = ({ firebase }) => {
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [lastVisible, setLastVisible] =
+    useState<QueryDocumentSnapshot<DocumentData> | null>(null);
+  const [visibleMessages, setVisibleMessages] = useState<number>(10);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -55,6 +59,10 @@ const Tweets: React.FC<LoginProps> = ({ firebase }) => {
 
         setMessages(fetchedMessages);
         setLoading(false);
+
+        if (querySnapshot.size > 0) {
+          setLastVisible(querySnapshot.docs[querySnapshot.size - 1]);
+        }
       } catch (error) {
         console.error('Error getting documents: ', error);
       }
@@ -63,13 +71,64 @@ const Tweets: React.FC<LoginProps> = ({ firebase }) => {
     fetchMessages();
   }, [firebase]);
 
+  const loadMoreMessages = async () => {
+    try {
+      const firestore = getFirestore(firebase);
+      const messagesCollection = collection(firestore, 'messages');
+      const q = query(
+        messagesCollection,
+        orderBy('createdAt', 'desc'),
+        startAfter(lastVisible),
+        limit(10)
+      );
+      const querySnapshot = await getDocs(q);
+
+      const newMessages: Message[] = [];
+      querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
+        const data = doc.data();
+        newMessages.push({
+          id: doc.id,
+          uid: data.uid,
+          displayName: data.displayName,
+          photoURL: data.photoURL,
+          text: data.text,
+          imageUrl: data.imageUrl,
+          createdAt: data.createdAt,
+        });
+      });
+
+      setMessages((prevMessages) => [...prevMessages, ...newMessages]);
+      setVisibleMessages((prevVisibleMessages) => prevVisibleMessages + 10);
+
+      if (querySnapshot.size > 0) {
+        setLastVisible(querySnapshot.docs[querySnapshot.size - 1]);
+      }
+    } catch (error) {
+      console.error('Error getting more documents: ', error);
+    }
+  };
+
   const view = () => {
+    const visibleMessagesList = messages.slice(0, visibleMessages);
+
     return (
-      <div>
-        {messages.map((msg) => (
-          <Tweet key={msg.id} message={msg} firebase={firebase} />
-        ))}
-      </div>
+      <>
+        <div className=''>
+          {visibleMessagesList.map((msg) => (
+            <Tweet key={msg.id} message={msg} firebase={firebase} />
+          ))}
+        </div>
+        {visibleMessagesList.length < messages.length && (
+          <div className='pb-4 m-auto'>
+            <button
+              className='p-2 text-xl border-2 border-black border-solid bg-light rounded-xl'
+              onClick={loadMoreMessages}
+            >
+              Lataa lisää muistoja
+            </button>
+          </div>
+        )}
+      </>
     );
   };
 

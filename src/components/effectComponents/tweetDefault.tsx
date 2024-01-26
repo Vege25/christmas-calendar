@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ProfileComponent from '../profileComponent';
 
 interface Message {
@@ -17,6 +17,11 @@ interface Values {
 const TweetDefault: React.FC<Message> = ({ message, firebase }) => {
   // Add your component logic here
   const { text } = message;
+  const [showImage, setShowImage] = useState(false);
+
+  const handleImageClick = () => {
+    setShowImage(!showImage);
+  };
 
   return (
     // Add your JSX code here
@@ -26,9 +31,18 @@ const TweetDefault: React.FC<Message> = ({ message, firebase }) => {
         <div className='w-full m-2'>
           <p className='text-md '>{text}</p>
         </div>
-        <div className='w-full tweet-content-image'>
+        <div
+          className='w-full m-auto cursor-pointer tweet-content-image'
+          onClick={handleImageClick}
+        >
           {message.imageUrl && (
-            <img className='m-auto' src={message.imageUrl} alt='Tweet Image' />
+            <img
+              className={`m-auto max-h-96 ${
+                showImage ? 'flex max-h-none' : ''
+              }`}
+              src={message.imageUrl}
+              alt='Tweet Image'
+            />
           )}
         </div>
       </div>

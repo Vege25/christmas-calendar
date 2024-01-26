@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { LoginProps } from '../interfaces/firebase';
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-} from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 import {
   getFirestore,
   collection,
