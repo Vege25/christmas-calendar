@@ -35,18 +35,20 @@ const RecipesPage: React.FC<LoginProps> = ({ firebase }) => {
     const recipesData = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
-    }));
-    const recipiesAsType = recipesData as RecipeData[];
-    setRecipes(recipiesAsType);
-    console.log(recipes);
+    })) as RecipeData[];
+
+    // Sort recipes by priority
+    recipesData.sort((a, b) => a.priority - b.priority);
+
+    setRecipes(recipesData);
 
     // categorize recipes based on foodType
-    const foodRecipesData = recipiesAsType.filter(
+    const foodRecipesData = recipesData.filter(
       (recipe) => recipe.foodType === 'food'
     );
     setFoodRecipes(foodRecipesData);
 
-    const dessertRecipesData = recipiesAsType.filter(
+    const dessertRecipesData = recipesData.filter(
       (recipe) => recipe.foodType === 'dessert'
     );
     setDessertRecipes(dessertRecipesData);
@@ -139,26 +141,26 @@ const RecipesPage: React.FC<LoginProps> = ({ firebase }) => {
           <div>
             <button
               type='submit'
-              className='px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'
+              className='px-4 py-2 text-white bg-blue-500 rounded-md cursor-pointer hover:bg-blue-600 focus:outline-none focus:bg-blue-600'
             >
-              Add Recipe
+              Lisää resepti
             </button>
           </div>
         </form>
       </div>
-      <div>
+      <div className='grid gap-6 md:grid-cols-2'>
         <div>
           <h3 className='py-4 mt-10 text-2xl font-bold'>Ruokareseptit</h3>
-          <ul className='flex gap-2'>
+          <ul className='grid gap-2'>
             {foodRecipes.map((recipe) => (
               <li
                 className='p-4 border-2 rounded-md bg-light border-primary'
                 key={recipe.id}
               >
-                <div className='mb-2 text-2xl font-bold'>
+                <div className='mb-2 text-xl font-bold'>
                   {recipe.recipeName}
                 </div>
-                <div className='flex flex-row items-center gap-2'>
+                <div className='flex items-center gap-2'>
                   <p>Hinta:</p>
                   <div
                     className={`h-4 w-4 rounded-full ${
@@ -172,27 +174,31 @@ const RecipesPage: React.FC<LoginProps> = ({ firebase }) => {
             ))}
           </ul>
         </div>
-        <h3 className='py-4 mt-10 text-2xl font-bold'>Jälkiruoat</h3>
-        <ul className='flex gap-2'>
-          {dessertRecipes.map((recipe) => (
-            <li
-              className='p-4 border-2 rounded-md bg-light border-primary'
-              key={recipe.id}
-            >
-              <div className='text-xl font-bold'>{recipe.recipeName}</div>
-              <div className='flex flex-row items-center gap-2'>
-                <p>Hinta:</p>
-                <div
-                  className={`h-4 w-4 rounded-full ${
-                    recipe.priority == 1 && 'bg-green-400'
-                  } ${recipe.priority == 2 && 'bg-yellow-400'} ${
-                    recipe.priority == 3 && 'bg-red-400'
-                  }`}
-                ></div>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <div>
+          <h3 className='py-4 mt-10 text-2xl font-bold'>Jälkiruoat</h3>
+          <ul className='grid gap-2'>
+            {dessertRecipes.map((recipe) => (
+              <li
+                className='p-4 border-2 rounded-md bg-light border-primary'
+                key={recipe.id}
+              >
+                <div className='mb-2 text-xl font-bold'>
+                  {recipe.recipeName}
+                </div>
+                <div className='flex items-center gap-2'>
+                  <p>Hinta:</p>
+                  <div
+                    className={`h-4 w-4 rounded-full ${
+                      recipe.priority == 1 && 'bg-green-400'
+                    } ${recipe.priority == 2 && 'bg-yellow-400'} ${
+                      recipe.priority == 3 && 'bg-red-400'
+                    }`}
+                  ></div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
