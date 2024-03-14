@@ -59,6 +59,11 @@ const Header: React.FC<User> = ({ user, isGiftDisabled }) => {
         </div>
         <div className='flex items-center h-full gap-10 text-lg'>
           <div className=''>
+            <a href='/recipie'>
+              <i className='fa-solid fa-utensils'></i>
+            </a>
+          </div>
+          <div className=''>
             <a href='/bucket'>
               <i className='fa-regular fa-calendar'></i>
             </a>
