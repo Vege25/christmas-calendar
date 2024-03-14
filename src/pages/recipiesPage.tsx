@@ -38,6 +38,7 @@ const RecipesPage: React.FC<LoginProps> = ({ firebase }) => {
     }));
     const recipiesAsType = recipesData as RecipeData[];
     setRecipes(recipiesAsType);
+    console.log(recipes);
 
     // categorize recipes based on foodType
     const foodRecipesData = recipiesAsType.filter(
@@ -148,7 +149,7 @@ const RecipesPage: React.FC<LoginProps> = ({ firebase }) => {
       <div>
         <div>
           <h3 className='py-4 mt-10 text-2xl font-bold'>Ruokareseptit</h3>
-          <ul className='flex'>
+          <ul className='flex gap-2'>
             {foodRecipes.map((recipe) => (
               <li
                 className='p-4 border-2 rounded-md bg-light border-primary'
@@ -172,7 +173,7 @@ const RecipesPage: React.FC<LoginProps> = ({ firebase }) => {
           </ul>
         </div>
         <h3 className='py-4 mt-10 text-2xl font-bold'>Jälkiruoat</h3>
-        <ul className='flex'>
+        <ul className='flex gap-2'>
           {dessertRecipes.map((recipe) => (
             <li
               className='p-4 border-2 rounded-md bg-light border-primary'
